@@ -280,9 +280,9 @@ const Game: FC<{
       const x = (Math.sin(time + i) * canvas.width / devicePixelRatioRef.current) % canvas.width;
       const y = (Math.cos(time + i) * canvas.height / devicePixelRatioRef.current) % canvas.height;
       const size = Math.sin(time + i) * 2 + 1;
-      
+      const safeSize = Math.max(size, 0);
       ctx.beginPath();
-      ctx.arc(x, y, size, 0, Math.PI * 2);
+      ctx.arc(x, y, safeSize, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(148, 163, 184, ${0.1 + Math.sin(time + i) * 0.05})`; // slate-400 with varying opacity
       ctx.fill();
     }
