@@ -1,40 +1,34 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import twaLogo from './assets/tapps.png'
-import viteLogo from '/vite.svg'
+import HomePage from './components/HomePage'
+import Game from './components/Game'
+import GameOver from './components/GameOver'
 import './App.css'
 
-import WebApp from '@twa-dev/sdk'
-
 function App() {
-  const [count, setCount] = useState(0)
+  const [gameState, setGameState] = useState<'home' | 'playing' | 'gameOver'>('home')
+  const [finalScore, setFinalScore] = useState(0)
+
+  const handleStartGame = () => {
+    setGameState('playing')
+  }
+
+  const handleGameOver = (score: number) => {
+    setFinalScore(score)
+    setGameState('gameOver')
+  }
+
+  const handlePlayAgain = () => {
+    setGameState('playing')
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://ton.org/dev" target="_blank">
-          <img src={twaLogo} className="logo" alt="TWA logo" />
-        </a>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>TWA + Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-      </div>
-      {/*  */}
-      <div className="card">
-        <button onClick={() => WebApp.showAlert(`Hello World! Current count is ${count}`)}>
-            Show Alert
-        </button>
-      </div>
-    </>
+    <div className="fixed inset-0 w-full h-full overflow-hidden bg-gradient-to-b from-blue-900 to-blue-700">
+      {gameState === 'home' && <HomePage onStartGame={handleStartGame} />}
+      {gameState === 'playing' && <Game onGameOver={handleGameOver} />}
+      {gameState === 'gameOver' && (
+        <GameOver score={finalScore} onPlayAgain={handlePlayAgain} />
+      )}
+    </div>
   )
 }
 
